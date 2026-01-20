@@ -1,0 +1,8 @@
+jobs:
+  create-repo:
+    uses: StrongestNumber9/repodemo/.github/workflows/create_repo.yaml@main
+    with:
+      component_path: teragrep/pth_10
+      component_version: 10.4.1
+      deploy_branch: gh-pages
+      deploy_basepath: repo

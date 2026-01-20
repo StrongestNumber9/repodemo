@@ -1,0 +1,31 @@
+on:
+  workflow_call:
+    inputs:
+      component_path:
+        description: 'Github repository path for the component'
+        required: true
+        type: string
+      component_version:
+        description: 'The version to make repository of'
+        default: 'latest'
+        required: true
+        type: string
+      deploy_branch:
+        description: 'Which branch to deploy the repodata to'
+        default: 'gh-pages'
+        required: true
+        type: string
+      deploy_basepath:
+        description: 'Which path to deploy the repodata to'
+        default: 'repo'
+        required: true
+        type: string
+
+jobs:
+  create-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: apt-get --yes install createrepo_c
+      - name: Create repo
+        run: echo Data given: path: ${{inputs.component_path}} - version: ${{inputs.component_version}} - branch: ${{inputs.deploy_branch}} - basepath: ${{deploy_basepath}}
