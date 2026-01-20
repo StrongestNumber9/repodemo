@@ -4,12 +4,9 @@ on: [ push ]
 
 jobs:
   create-repo:
-    runs-on: ubuntu-latest
     permissions:
       contents: write
-    steps:
-      - name: Call create repo
-        uses: StrongestNumber9/repodemo/.github/workflows/create_repo.yaml@main
-        with:
-          component_path: teragrep/pth_10
-          component_version: 10.4.1
+    uses: StrongestNumber9/repodemo/.github/workflows/create_repo.yaml@main
+    with:
+      component_path: teragrep/pth_10
+      component_version: 10.4.1
