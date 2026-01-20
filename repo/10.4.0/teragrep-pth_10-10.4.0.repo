@@ -1,5 +1,5 @@
 [teragrep-pth_10-10.4.0]
 name=teragrep-pth_10-10.4.0
-baseurl=https://raw.githubusercontent.com/teragrep/pth_10//refs/heads/gh-pages/repo/10.4.0
+baseurl=https://raw.githubusercontent.com/teragrep/pth_10/refs/heads/gh-pages/repo/10.4.0
 gpgcheck=0
 enabled=1
