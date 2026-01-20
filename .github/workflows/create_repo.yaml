@@ -24,20 +24,28 @@ jobs:
   create_repo:
     runs-on: ubuntu-latest
     steps:
+      # Try checking out deployment branch
       - name: Fetch deployment branch
-        id: checkout
-        uses: actions/checkout@v4
+        id: checkout-deployment
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           repository: ${{ github.repository }}
           ref: ${{ inputs.deploy_branch }}
           sparse-checkout: |
             ${{ inputs.deploy_basepath }}/
-          path: deployment/
         continue-on-error: true
-      - name: Create a repository if checkout failed
+      # Checkout main branch if deployment does not exist
+      - name: Fetch main branch
+        id: checkout-main
+        if: steps.checkout-deployment.outcome == 'failure'
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      # Switch branch if deployment checkout failed
+      - name: Switch branch if necessary
         if: steps.checkout.outcome == 'failure'
-        run: git init --initial-branch="${{ inputs.deploy_branch }}" . && git worktree add --orphan github-pages-deploy-action-temp-deployment-folder
+        run: git checkout --orphan "${{ inputs.deploy_branch }}"
       - name: Prepare repository deployment dirs
         run: mkdir -p "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
       - name: Install dependencies
@@ -57,10 +65,8 @@ jobs:
           baseurl=https://raw.githubusercontent.com/${{ inputs.component_path }}//refs/heads/${{ inputs.deploy_branch}}/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}
           gpgcheck=0
           enabled=1' > "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}/${{ env.NORMALIZED_PATH }}.repo"
-      - name: Debug2
-        run: find workdir/ && echo "---" && find workdir/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find workdir/ -type f -name "*xml" -exec cat {} \; && echo "---" && find workdir/ -type f -name "*.gz" -exec zcat {} \;
       - name: Debug3
-        run: find deployment/${{ inputs.deploy_basepath }}/ && echo "---" && find deployment/${{ inputs.deploy_basepath }}/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find deployment/${{ inputs.deploy_basepath }}/ -type f -name "*xml" -exec cat {} \; && echo "---" && find deployment/${{ inputs.deploy_basepath }}/ -type f -name "*.gz" -exec zcat {} \;
+        run: find deployment/${{ inputs.deploy_basepath }}/ && echo "---" && find deployment/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find deployment/ -type f -name "*xml" -exec cat {} \; && echo "---" && find deployment/ -type f -name "*.gz" -exec zcat {} \;
       - name: Deploy base repository files
         uses: JamesIves/github-pages-deploy-action@v4
         with:
