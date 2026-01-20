@@ -66,8 +66,6 @@ jobs:
           baseurl=https://raw.githubusercontent.com/${{ inputs.component_path }}//refs/heads/${{ inputs.deploy_branch}}/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}
           gpgcheck=0
           enabled=1' > "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}/${{ env.NORMALIZED_PATH }}.repo"
-      - name: Debug3
-        run: find deployment/${{ inputs.deploy_basepath }}/ && echo "---" && find deployment/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find deployment/ -type f -name "*xml" -exec cat {} \; && echo "---" && find deployment/ -type f -name "*.gz" -exec zcat {} \;
       # Deploy current repository
       - name: Deploy base repository files
         uses: JamesIves/github-pages-deploy-action@v4
