@@ -28,4 +28,4 @@ jobs:
         run: |
           echo "Data given path: ${{ inputs.component_path }} version: ${{ inputs.component_version }} branch: ${{ inputs.deploy_branch }} basepath: ${{ inputs.deploy_basepath }}"
       - name: Install dependencies
-        run: sudo update && sudo apt-get --yes install createrepo_c
+        run: sudo apt-get update && sudo apt-get --yes install createrepo_c
