@@ -19,7 +19,7 @@ jobs:
     needs: [ create_repo ]
     steps:
       - name: Retry failed jobs
-        run: for i in {1..5}; do echo "Run ${i}";  gh run rerun "${{ github.run_id }}" --failed && break; done;
+        run: for jobid in $(gh run view "${{ github.run_id }}" --json jobs --jq '.jobs[] | select(.conclusion=="failure").databaseId'); do gh run rerun --job "${jobid}"; done;
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
