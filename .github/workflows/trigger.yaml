@@ -3,21 +3,22 @@ name: Trigger create repo
 on: [ push ]
 
 jobs:
-  create-repo:
+  create_repo:
     permissions:
       actions: write
       contents: write
     uses: StrongestNumber9/repodemo/.github/workflows/create_repo.yaml@main
+    id: create_repo
     with:
       component_path: teragrep/pth_10
       component_version: 10.4.0
 
   retry_failed_jobs:
     runs-on: ubuntu-latest
-    if: failure() && fromJSON(github.run_attempt) < 3
+    if: steps.create_repo.outcome == 'failure'
     steps:
       - name: Retry failed jobs
-        run: gh run rerun "${{ github.run_id }}" --failed
+        run: for i in {1..5}; do echo "Run ${i}";  gh run rerun "${{ github.run_id }}" --failed && break; done;
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
