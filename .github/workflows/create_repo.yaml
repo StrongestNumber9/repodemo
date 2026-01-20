@@ -119,7 +119,7 @@ jobs:
     if: failure() && fromJSON(github.run_attempt) < 3
     steps:
       - name: Retry failed jobs
-        run: gh run rerun "${{ github.run_id }}" --failed
+        run: for jobid in $(gh run view "${{ github.run_id }}" --json jobs --jq '.jobs[] | select(.conclusion=="failure").databaseId'); do gh run rerun --job "${jobid}"; done;
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
