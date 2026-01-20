@@ -8,14 +8,12 @@ jobs:
       actions: write
       contents: write
     uses: StrongestNumber9/repodemo/.github/workflows/create_repo.yaml@main
-    id: create_repo
     with:
       component_path: teragrep/pth_10
       component_version: 10.4.0
 
   retry_failed_jobs:
     runs-on: ubuntu-latest
-    if: steps.create_repo.outcome == 'failure'
     steps:
       - name: Retry failed jobs
         run: for i in {1..5}; do echo "Run ${i}";  gh run rerun "${{ github.run_id }}" --failed && break; done;
