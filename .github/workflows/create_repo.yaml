@@ -76,6 +76,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
   merge_repo:
     runs-on: ubuntu-latest
+    retry:
+      max-retries: 3
     steps:
       # Try checking out deployment branch
       - name: Fetch deployment branch
@@ -112,10 +114,3 @@ jobs:
           target-folder: "${{ inputs.deploy_basepath }}/releases"
           branch: "${{ inputs.deploy_branch }}"
           token: ${{ secrets.GITHUB_TOKEN }}
-  retry_merge_repo:
-    if: failure() && fromJSON(github.run_attempt) < 3
-    needs: [merge_repo]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Retry merge_repo if it fails
-        run: echo "Running merge_repo again, attempt ${{ github.run_attempt }}"
