@@ -24,17 +24,25 @@ jobs:
   create_repo:
     runs-on: ubuntu-latest
     steps:
-      - name: Debug
-        run: |
-          echo "Data given path: ${{ inputs.component_path }} version: ${{ inputs.component_version }} branch: ${{ inputs.deploy_branch }} basepath: ${{ inputs.deploy_basepath }}"
+      - name: Fetch deployment branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          repository: ${{ github.repository }}
+          ref: ${{ inputs.deploy_branch }}
+          sparse-checkout: |
+            ${{ inputs.deploy_basepath }}/
+          path: ${{ inputs.deploy_basepath }}/
+      - name: Prepare repository staging dirs
+        run: mkdir "${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get --yes install createrepo-c
       - name: Download release
         run: gh release download --repo "${{ inputs.component_path }}" --pattern "*.rpm" --dir "repo/${{ inputs.component_version }}" "${{ inputs.component_version }}"
         env:
           GH_TOKEN: ${{ github.token }}
-      - name: Create repository
-        run: createrepo_c --no-database --baseurl=https://www.github.com --location-prefix="https://github.com/${{ inputs.component_path }}/releases/download/" repo/
+      - name: Generate repository files
+        run: createrepo_c --no-database --baseurl=https://www.github.com --location-prefix="https://github.com/${{ inputs.component_path }}/releases/download/" --outputdir="${{ inputs.deploy_basepath }}/${{ inputs.component_version }}" repo/
       - name: Normalize repository information
         run: printf "NORMALIZED_PATH=%q\n" "$(sed 's,/,-,g' <<< '${{ inputs.component_path }}-${{ inputs.component_version }}')" >> $GITHUB_ENV
       - name: Create .repo file
@@ -43,6 +51,8 @@ jobs:
           name=${{ env.NORMALIZED_PATH }}
           baseurl=https://raw.githubusercontent.com/${{ inputs.component_path }}//refs/heads/${{ inputs.deploy_branch}}/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}
           gpgcheck=0
-          enabled=1' > ${{ env.NORMALIZED_PATH }}.repo
+          enabled=1' > "${{ inputs.deploy_basepath }}/${{ inputs.component_version }}/${{ env.NORMALIZED_PATH }}.repo"
       - name: Debug2
         run: find repo/ && echo "---" && find repo/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find repo/ -type f -name "*xml" -exec cat {} \; && echo "---" && find repo/ -type f -name "*.gz" -exec zcat {} \;
+      - name: Debug3
+        run: find ${{ inputs.inputs.deploy_basepath }}/ && echo "---" && find ${{ inputs.inputs.deploy_basepath }}/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find ${{ inputs.inputs.deploy_basepath }}/ -type f -name "*xml" -exec cat {} \; && echo "---" && find ${{ inputs.inputs.deploy_basepath }}/ -type f -name "*.gz" -exec zcat {} \;
