@@ -11,3 +11,13 @@ jobs:
     with:
       component_path: teragrep/pth_10
       component_version: 10.4.0
+
+  retry_failed_jobs:
+    runs-on: ubuntu-latest
+    if: failure() && fromJSON(github.run_attempt) < 3
+    steps:
+      - name: Retry failed jobs
+        run: gh run rerun "${{ github.run_id }}" --failed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
