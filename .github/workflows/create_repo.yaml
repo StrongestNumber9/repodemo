@@ -30,4 +30,4 @@ jobs:
       - name: Install dependencies
         run: apt-get --yes install createrepo_c
       - name: Create repo
-        run: echo Data given: path: ${{ inputs.component_path }} - version: ${{ inputs.component_version }} - branch: ${{ inputs.deploy_branch }} - basepath: ${{ inputs.deploy_basepath }}
+        run: echo 'Data given: path: ${{ inputs.component_path }} - version: ${{ inputs.component_version }} - branch: ${{ inputs.deploy_branch }} - basepath: ${{ inputs.deploy_basepath }}'
