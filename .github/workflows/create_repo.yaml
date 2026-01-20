@@ -39,10 +39,10 @@ jobs:
         run: printf "NORMALIZED_PATH=%q\n" "$(sed 's,/,-,g' <<< '${{ inputs.component_path }}-${{ inputs.component_version }}')" >> $GITHUB_ENV
       - name: Create .repo file
         run: |
-          echo '[${{ NORMALIZED_PATH }}]
-          name=${{ NORMALIZED_PATH }}
+          echo '[${{ env.NORMALIZED_PATH }}]
+          name=${{ env.NORMALIZED_PATH }}
           baseurl=https://raw.githubusercontent.com/${{ inputs.component_path }}//refs/heads/${{ inputs.deploy_branch}}/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}
           gpgcheck=0
-          enabled=1' > ${{ NORMALIZED_PATH }}.repo
+          enabled=1' > ${{ env.NORMALIZED_PATH }}.repo
       - name: Debug2
         run: find repo/ && echo "---" && find repo/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find repo/ -type f -name "*xml" -exec cat {} \; && echo "---" && find repo/ -type f -name "*.gz" -exec zcat {} \;
