@@ -74,33 +74,17 @@ jobs:
           target-folder: "${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
           branch: "${{ inputs.deploy_branch }}"
           token: ${{ secrets.GITHUB_TOKEN }}
-  merge_repo:
-    runs-on: ubuntu-latest
-    steps:
-      # Try checking out deployment branch
-      - name: Fetch deployment branch
-        id: checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          repository: ${{ github.repository }}
-          ref: ${{ inputs.deploy_branch }}
-          sparse-checkout: |
-            ${{ inputs.deploy_basepath }}/
-      # Install dependencies
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get --yes install createrepo-c
       # Merge repos
       - name: Merge repositories
         run: mergerepo --all --no-database $(find ${{ inputs.deploy_basepath }}/ -maxdepth 1 -type d -not -name releases -not -name ${{ inputs.deploy_basepath }} -printf "--repo=%p ") --outputdir "${{ inputs.deploy_basepath }}/releases"
       # Normalize path for repofile
       - name: Normalize repository information
-        run: printf "NORMALIZED_PATH=%q\n" "$(sed 's,/,-,g' <<< '${{ inputs.component_path }}-releases')" >> $GITHUB_ENV
+        run: printf "NORMALIZED_PATH_RELEASES=%q\n" "$(sed 's,/,-,g' <<< '${{ inputs.component_path }}-releases')" >> $GITHUB_ENV
       # Create repofile
       - name: Create .repo file
         run: |
-          echo '[${{ env.NORMALIZED_PATH }}]
-          name=${{ env.NORMALIZED_PATH }}
+          echo '[${{ env.NORMALIZED_PATH_RELEASES }}]
+          name=${{ env.NORMALIZED_PATH_RELEASES }}
           baseurl=https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/${{ inputs.deploy_branch }}/${{ inputs.deploy_basepath }}/releases
           gpgcheck=0
           enabled=1' > "deployment/${{ inputs.deploy_basepath }}/releases/${{ env.NORMALIZED_PATH }}.repo"
