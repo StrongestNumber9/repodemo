@@ -76,7 +76,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       # Merge repos
       - name: Merge repositories
-        run: mergerepo_c --all --no-database $(find ${{ inputs.deploy_basepath }}/ -maxdepth 1 -type d -not -name releases -not -name ${{ inputs.deploy_basepath }} -printf "--repo=%p ") --outputdir "${{ inputs.deploy_basepath }}/releases"
+        run: mergerepo_c --all --no-database $(find ${{ inputs.deploy_basepath }}/ -maxdepth 1 -type d -not -name releases -not -name ${{ inputs.deploy_basepath }} -printf "--repo=%p ") --outputdir "deployment/${{ inputs.deploy_basepath }}/releases"
       # Normalize path for repofile
       - name: Normalize repository information
         run: printf "NORMALIZED_PATH_RELEASES=%q\n" "$(sed 's,/,-,g' <<< '${{ inputs.component_path }}-releases')" >> $GITHUB_ENV
