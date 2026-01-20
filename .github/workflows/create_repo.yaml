@@ -116,3 +116,6 @@ jobs:
     if: failure() && fromJSON(github.run_attempt) < 3
     needs: [merge_repo]
     runs-on: ubuntu-latest
+    steps:
+      - name: Retry merge_repo if it fails
+        run: echo "Running merge_repo again, attempt ${{ github.run_attempt }}"
