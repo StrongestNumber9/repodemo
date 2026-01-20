@@ -37,7 +37,7 @@ jobs:
         continue-on-error: true
       - name: Create a repository if checkout failed
         if: steps.checkout.outcome == 'failure'
-        run: git init --orphan --initial-branch="${{ inputs.deploy_branch }}" .
+        run: git init --initial-branch="${{ inputs.deploy_branch }}" . && git worktree add --orphan github-pages-deploy-action-temp-deployment-folder
       - name: Prepare repository deployment dirs
         run: mkdir -p "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
       - name: Install dependencies
