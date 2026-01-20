@@ -25,7 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch deployment branch
-        id: checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -35,9 +34,6 @@ jobs:
             ${{ inputs.deploy_basepath }}/
           path: deployment/${{ inputs.deploy_basepath }}/
         continue-on-error: true
-      - name: Switch to deployment branch manually if it does not exist
-        if: steps.checkout.outcome == 'failure'
-        run: git switch --create "${{ inputs.deploy_branch }}"
       - name: Prepare repository deployment dirs
         run: mkdir -p "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
       - name: Install dependencies
