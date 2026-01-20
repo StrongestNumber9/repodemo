@@ -44,20 +44,26 @@ jobs:
           fetch-depth: 0
       # Switch branch if deployment checkout failed
       - name: Switch branch if necessary
-        if: steps.checkout.outcome == 'failure'
+        if: steps.checkout-deployment.outcome == 'failure'
         run: git checkout --orphan "${{ inputs.deploy_branch }}"
+      # Create deployment directories
       - name: Prepare repository deployment dirs
         run: mkdir -p "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
+      # Install dependencies
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get --yes install createrepo-c
+      # Download artifact(s)
       - name: Download release
         run: gh release download --repo "${{ inputs.component_path }}" --pattern "*.rpm" --dir "workdir/${{ inputs.component_version }}" "${{ inputs.component_version }}"
         env:
           GH_TOKEN: ${{ github.token }}
+      # Generate repository files
       - name: Generate repository files
         run: createrepo_c --no-database --baseurl=https://www.github.com --location-prefix="https://github.com/${{ inputs.component_path }}/releases/download/" --outputdir="deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}" workdir/
+      # Normalize path for repofile
       - name: Normalize repository information
         run: printf "NORMALIZED_PATH=%q\n" "$(sed 's,/,-,g' <<< '${{ inputs.component_path }}-${{ inputs.component_version }}')" >> $GITHUB_ENV
+      # Create repofile
       - name: Create .repo file
         run: |
           echo '[${{ env.NORMALIZED_PATH }}]
@@ -67,6 +73,7 @@ jobs:
           enabled=1' > "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}/${{ env.NORMALIZED_PATH }}.repo"
       - name: Debug3
         run: find deployment/${{ inputs.deploy_basepath }}/ && echo "---" && find deployment/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find deployment/ -type f -name "*xml" -exec cat {} \; && echo "---" && find deployment/ -type f -name "*.gz" -exec zcat {} \;
+      # Deploy current repository
       - name: Deploy base repository files
         uses: JamesIves/github-pages-deploy-action@v4
         with:
