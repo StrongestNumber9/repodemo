@@ -24,8 +24,14 @@ jobs:
   create_repo:
     runs-on: ubuntu-latest
     steps:
-      - name: Create repo
+      - name: Debug
         run: |
           echo "Data given path: ${{ inputs.component_path }} version: ${{ inputs.component_version }} branch: ${{ inputs.deploy_branch }} basepath: ${{ inputs.deploy_basepath }}"
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get --yes install createrepo-c
+      - name: Download release
+        run: gh release download --repo "${{ inputs.component_path }}" --pattern "*.rpm" --dir "repo/${{ inputs.component_version }}" "${{ inputs.component_version }}"
+      - name: Create repository
+        run: createrepo --no-database --baseurl=https://www.github.com --location-prefix="https://github.com/${{ inputs.component_path }}/releases/download/${{ inputs.component_version }}/" repo/
+      - name: Debug2
+        run: find repo/ -type f -name "*xml" -exec cat {} \; && find repo/ -type f -name "*.gz" -exec zcat {} \;
