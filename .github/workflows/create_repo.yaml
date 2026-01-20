@@ -34,6 +34,9 @@ jobs:
             ${{ inputs.deploy_basepath }}/
           path: deployment/
         continue-on-error: true
+      - name: Create a repository if checkout failed
+        if: steps.checkout.outcome == 'failure'
+        run: git init --initial-branch="${{ inputs.deploy_branch }}" deployment/
       - name: Prepare repository deployment dirs
         run: mkdir -p "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
       - name: Install dependencies
