@@ -23,8 +23,6 @@ on:
 jobs:
   create_repo:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       # Try checking out deployment branch
       - name: Fetch deployment branch
