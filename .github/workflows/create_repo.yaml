@@ -9,18 +9,15 @@ on:
         type: string
       component_version:
         description: 'The version to make repository of'
-        default: 'latest'
         required: true
         type: string
       deploy_branch:
         description: 'Which branch to deploy the repodata to'
         default: 'gh-pages'
-        required: true
         type: string
       deploy_basepath:
         description: 'Which path to deploy the repodata to'
         default: 'repo'
-        required: true
         type: string
 
 jobs:
