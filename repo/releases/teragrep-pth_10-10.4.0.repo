@@ -1,0 +1,5 @@
+[teragrep-pth_10-releases]
+name=teragrep-pth_10-releases
+baseurl=https://raw.githubusercontent.com/StrongestNumber9/repodemo/refs/heads/gh-pages/repo/releases
+gpgcheck=0
+enabled=1
