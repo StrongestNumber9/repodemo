@@ -15,6 +15,7 @@ jobs:
     permissions:
       actions: write
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     needs: [ create_repo ]
     steps:
       - name: Retry failed jobs
