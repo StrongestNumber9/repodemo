@@ -35,12 +35,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
       - name: Create repository
         run: createrepo_c --no-database --baseurl=https://www.github.com --location-prefix="https://github.com/${{ inputs.component_path }}/releases/download/" repo/
+      - name: Normalize repository information
+        run: printf "NORMALIZED_PATH=%q\n" "$(sed 's,/,-,g' <<< '${{ inputs.component_path }}-${{ inputs.component_version }}')" >> $GITHUB_ENV
       - name: Create .repo file
         run: |
-          echo '[${{ inputs.component_path }}-${{ inputs.component_version }}]
-          name=${{ inputs.component_path }}-${{ inputs.component_version}}
+          echo '[${{ NORMALIZED_PATH }}]
+          name=${{ NORMALIZED_PATH }}
           baseurl=https://raw.githubusercontent.com/${{ inputs.component_path }}//refs/heads/${{ inputs.deploy_branch}}/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}
           gpgcheck=0
-          enabled=1' > ${{ inputs.component_path }}-${{ inputs.component_version }}.repo
+          enabled=1' > ${{ NORMALIZED_PATH }}.repo
       - name: Debug2
-        run: find repo/ && echo "---" && find repo/ -type f -name "*xml" -exec cat {} \; && echo "---" && find repo/ -type f -name "*.gz" -exec zcat {} \;
+        run: find repo/ && echo "---" && find repo/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find repo/ -type f -name "*xml" -exec cat {} \; && echo "---" && find repo/ -type f -name "*.gz" -exec zcat {} \;
