@@ -27,7 +27,7 @@ jobs:
       # Try checking out deployment branch
       - name: Fetch deployment branch
         id: checkout-deployment
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           repository: ${{ github.repository }}
@@ -39,13 +39,9 @@ jobs:
       - name: Fetch main branch
         id: checkout-main
         if: steps.checkout-deployment.outcome == 'failure'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      # Switch branch if deployment checkout failed
-      - name: Switch branch if necessary
-        if: steps.checkout-deployment.outcome == 'failure'
-        run: git checkout --orphan "${{ inputs.deploy_branch }}"
       # Create deployment directories
       - name: Prepare repository deployment dirs
         run: mkdir -p "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
