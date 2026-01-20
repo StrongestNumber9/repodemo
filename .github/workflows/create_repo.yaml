@@ -36,7 +36,7 @@ jobs:
         continue-on-error: true
       - name: Create a repository if checkout failed
         if: steps.checkout.outcome == 'failure'
-        run: git init --initial-branch="${{ inputs.deploy_branch }}" deployment/
+        run: git init --initial-branch="${{ inputs.deploy_branch }}" .
       - name: Prepare repository deployment dirs
         run: mkdir -p "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
       - name: Install dependencies
@@ -62,7 +62,6 @@ jobs:
         run: find deployment/${{ inputs.deploy_basepath }}/ && echo "---" && find deployment/${{ inputs.deploy_basepath }}/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find deployment/${{ inputs.deploy_basepath }}/ -type f -name "*xml" -exec cat {} \; && echo "---" && find deployment/${{ inputs.deploy_basepath }}/ -type f -name "*.gz" -exec zcat {} \;
       - name: Deploy base repository files
         uses: JamesIves/github-pages-deploy-action@v4
-        working-directory: ./deployment
         with:
           folder: "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
           target-folder: "${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
