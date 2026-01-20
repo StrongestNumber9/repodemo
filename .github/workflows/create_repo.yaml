@@ -35,11 +35,11 @@ jobs:
             ${{ inputs.deploy_basepath }}/
           path: deployment/${{ inputs.deploy_basepath }}/
         continue-on-error: true
-      - name: Create deployment branch if it does not exist
-        if: failure() && steps.checkout.outcome == 'failure'
+      - name: Switch to deployment branch manually if it does not exist
+        if: steps.checkout.outcome == 'failure'
         run: git switch --create "${{ inputs.deploy_branch }}"
       - name: Prepare repository deployment dirs
-        run: mkdir "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
+        run: mkdir -p "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get --yes install createrepo-c
       - name: Download release
