@@ -87,7 +87,7 @@ jobs:
           name=${{ env.NORMALIZED_PATH_RELEASES }}
           baseurl=https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/${{ inputs.deploy_branch }}/${{ inputs.deploy_basepath }}/releases
           gpgcheck=0
-          enabled=1' > "deployment/${{ inputs.deploy_basepath }}/releases/${{ env.NORMALIZED_PATH }}.repo"
+          enabled=1' > "deployment/${{ inputs.deploy_basepath }}/releases/${{ env.NORMALIZED_PATH_RELEASES }}.repo"
       # Deploy releases repository
       - name: Deploy releases repository files
         uses: JamesIves/github-pages-deploy-action@v4
