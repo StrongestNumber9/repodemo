@@ -23,6 +23,8 @@ on:
 jobs:
   create_repo:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       # Try checking out deployment branch
       - name: Fetch deployment branch
@@ -36,12 +38,12 @@ jobs:
             ${{ inputs.deploy_basepath }}/
         continue-on-error: true
       # Checkout main branch if deployment does not exist
-      - name: Fetch main branch
-        id: checkout-main
-        if: steps.checkout-deployment.outcome == 'failure'
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+#      - name: Fetch main branch
+#        id: checkout-main
+#        if: steps.checkout-deployment.outcome == 'failure'
+#        uses: actions/checkout@v6
+#        with:
+#          fetch-depth: 0
       # Create deployment directories
       - name: Prepare repository deployment dirs
         run: mkdir -p "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
