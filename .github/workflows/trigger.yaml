@@ -1,3 +1,7 @@
+name: Trigger create repo
+
+on: [ push ]
+
 jobs:
   create-repo:
     uses: StrongestNumber9/repodemo/.github/workflows/create_repo.yaml@main
