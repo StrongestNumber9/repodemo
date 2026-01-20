@@ -5,7 +5,7 @@ on: [ push ]
 jobs:
   create-repo:
     permissions:
-      actions: read
+      actions: write
       contents: write
     uses: StrongestNumber9/repodemo/.github/workflows/create_repo.yaml@main
     with:
