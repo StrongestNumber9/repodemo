@@ -60,4 +60,4 @@ jobs:
       - name: Debug2
         run: find repo/ && echo "---" && find repo/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find repo/ -type f -name "*xml" -exec cat {} \; && echo "---" && find repo/ -type f -name "*.gz" -exec zcat {} \;
       - name: Debug3
-        run: find ${{ inputs.inputs.deploy_basepath }}/ && echo "---" && find ${{ inputs.inputs.deploy_basepath }}/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find ${{ inputs.inputs.deploy_basepath }}/ -type f -name "*xml" -exec cat {} \; && echo "---" && find ${{ inputs.inputs.deploy_basepath }}/ -type f -name "*.gz" -exec zcat {} \;
+        run: find ${{ inputs.deploy_basepath }}/ && echo "---" && find ${{ inputs.deploy_basepath }}/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find ${{ inputs.deploy_basepath }}/ -type f -name "*xml" -exec cat {} \; && echo "---" && find ${{ inputs.deploy_basepath }}/ -type f -name "*.gz" -exec zcat {} \;
