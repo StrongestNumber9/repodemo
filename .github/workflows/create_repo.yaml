@@ -61,6 +61,7 @@ jobs:
       - name: Debug3
         run: find deployment/${{ inputs.deploy_basepath }}/ && echo "---" && find deployment/${{ inputs.deploy_basepath }}/ -type f -name "*.repo" -exec cat {} \; && echo "---" && find deployment/${{ inputs.deploy_basepath }}/ -type f -name "*xml" -exec cat {} \; && echo "---" && find deployment/${{ inputs.deploy_basepath }}/ -type f -name "*.gz" -exec zcat {} \;
       - name: Deploy base repository files
+        working-directory: ./deployment
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
