@@ -31,6 +31,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get --yes install createrepo-c
       - name: Download release
         run: gh release download --repo "${{ inputs.component_path }}" --pattern "*.rpm" --dir "repo/${{ inputs.component_version }}" "${{ inputs.component_version }}"
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Create repository
         run: createrepo --no-database --baseurl=https://www.github.com --location-prefix="https://github.com/${{ inputs.component_path }}/releases/download/${{ inputs.component_version }}/" repo/
       - name: Debug2
