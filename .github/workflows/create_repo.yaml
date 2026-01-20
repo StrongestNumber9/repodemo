@@ -63,7 +63,7 @@ jobs:
         run: |
           echo '[${{ env.NORMALIZED_PATH }}]
           name=${{ env.NORMALIZED_PATH }}
-          baseurl=https://raw.githubusercontent.com/${{ inputs.component_path }}/refs/heads/${{ inputs.deploy_branch}}/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}
+          baseurl=https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/${{ inputs.deploy_branch }}/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}
           gpgcheck=0
           enabled=1' > "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}/${{ env.NORMALIZED_PATH }}.repo"
       # Deploy current repository
