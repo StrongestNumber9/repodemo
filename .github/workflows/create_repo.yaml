@@ -36,4 +36,4 @@ jobs:
       - name: Create repository
         run: createrepo_c --no-database --baseurl=https://www.github.com --location-prefix="https://github.com/${{ inputs.component_path }}/releases/download/" repo/
       - name: Debug2
-        run: find repo/ -type f -name "*xml" -exec cat {} \; && find repo/ -type f -name "*.gz" -exec zcat {} \;
+        run: find repo/ && echo "---" && find repo/ -type f -name "*xml" -exec cat {} \; && echo "---" && find repo/ -type f -name "*.gz" -exec zcat {} \;
