@@ -8,7 +8,7 @@ jobs:
       contents: write
     steps:
       - name: Create repo
-        uses: uses: ./.github/actions/create_repo
+        uses: ./.github/actions/create_repo
         with:
           component_path: teragrep/pth_10
           component_version: 10.4.0
