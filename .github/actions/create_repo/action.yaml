@@ -36,7 +36,8 @@ runs:
         GH_TOKEN: ${{ github.token }}
     # Generate repository files
     - name: Generate repository files
-      run: cd "${{ runner.temp }}/" && createrepo_c --no-database --baseurl=https://www.github.com --location-prefix="https://github.com/${{ inputs.component_path }}/releases/download/" --outputdir="${{ runner.temp }}/deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}" workdir/
+      run: createrepo_c --no-database --baseurl=https://www.github.com --location-prefix="https://github.com/${{ inputs.component_path }}/releases/download/" --outputdir="${{ runner.temp }}/deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}" workdir/
+      working-directory: "${{ runner.temp }}"
       shell: bash
     # Normalize path for repofile
     - name: Normalize repository information
@@ -72,7 +73,8 @@ runs:
         path: mergerepo
     # Merge repos
     - name: Merge repositories
-      run: cd mergerepo && mergerepo_c --all --no-database $(find "${{ inputs.deploy_basepath }}/" -maxdepth 1 -type d -not -name releases -not -name "${{ inputs.deploy_basepath }}" -printf "--repo=%p ") --outputdir "${{ inputs.deploy_basepath }}/releases"
+      run: mergerepo_c --all --no-database $(find "${{ inputs.deploy_basepath }}/" -maxdepth 1 -type d -not -name releases -not -name "${{ inputs.deploy_basepath }}" -printf "--repo=%p ") --outputdir "${{ inputs.deploy_basepath }}/releases"
+      working-directory: mergerepo
       shell: bash
     # Normalize path for repofile
     - name: Normalize repository information
