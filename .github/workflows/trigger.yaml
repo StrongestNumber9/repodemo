@@ -11,7 +11,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v6
       - name: Create repo
-        uses: ./.github/actions/create_repo
+        uses: StrogestNumber9/repodemo/create_repo@main
         with:
           component_path: teragrep/pth_10
           component_version: 10.4.0
