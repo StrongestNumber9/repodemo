@@ -73,6 +73,7 @@ runs:
     # DEBUG REMOVE ME
     - name: Debug
       run: echo ">>>>>>>>>>GREPME>>>>>>>>>" && pwd && cd mergerepo && find .
+      shell: bash
     # Merge repos
     - name: Merge repositories
       run: cd mergerepo && mergerepo_c --all --no-database $(find "mergerepo/${{ inputs.deploy_basepath }}/" -maxdepth 1 -type d -not -name releases -not -name "${{ inputs.deploy_basepath }}" -printf "--repo=%p ") --outputdir "mergerepo/${{ inputs.deploy_basepath }}/releases"
@@ -93,6 +94,7 @@ runs:
     # DEBUG REMOVE ME
     - name: Debug
       run: echo ">>>>>>>>>>GREPME>>>>>>>>>" && pwd && cd mergerepo && find .
+      shell: bash
     # Deploy releases repository
     - name: Deploy releases repository files
       uses: JamesIves/github-pages-deploy-action@v4
