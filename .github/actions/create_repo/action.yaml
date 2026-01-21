@@ -40,20 +40,25 @@ runs:
     # Create deployment directories
     - name: Prepare repository deployment dirs
       run: mkdir -p "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
+      shell: bash
     # Install dependencies
     - name: Install dependencies
       run: sudo apt-get update && sudo apt-get --yes install createrepo-c
+      shell: bash
     # Download artifact(s)
     - name: Download release
       run: gh release download --repo "${{ inputs.component_path }}" --pattern "*.rpm" --dir "workdir/${{ inputs.component_version }}" "${{ inputs.component_version }}"
+      shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
     # Generate repository files
     - name: Generate repository files
       run: createrepo_c --no-database --baseurl=https://www.github.com --location-prefix="https://github.com/${{ inputs.component_path }}/releases/download/" --outputdir="deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}" workdir/
+      shell: bash
     # Normalize path for repofile
     - name: Normalize repository information
       run: printf "NORMALIZED_PATH=%q\n" "$(sed 's,/,-,g' <<< '${{ inputs.component_path }}-${{ inputs.component_version }}')" >> $GITHUB_ENV
+      shell: bash
     # Create repofile
     - name: Create .repo file
       run: |
@@ -62,6 +67,7 @@ runs:
         baseurl=https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/${{ inputs.deploy_branch }}/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}
         gpgcheck=0
         enabled=1' > "deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}/${{ env.NORMALIZED_PATH }}.repo"
+      shell: bash
     # Deploy current repository
     - name: Deploy base repository files
       uses: JamesIves/github-pages-deploy-action@v4
@@ -73,9 +79,11 @@ runs:
     # Merge repos
     - name: Merge repositories
       run: mergerepo_c --all --no-database $(find ${{ inputs.deploy_basepath }}/ -maxdepth 1 -type d -not -name releases -not -name ${{ inputs.deploy_basepath }} -printf "--repo=%p ") --outputdir "deployment/${{ inputs.deploy_basepath }}/releases"
+      shell: bash
     # Normalize path for repofile
     - name: Normalize repository information
       run: printf "NORMALIZED_PATH_RELEASES=%q\n" "$(sed 's,/,-,g' <<< '${{ inputs.component_path }}-releases')" >> $GITHUB_ENV
+      shell: bash
     # Create repofile
     - name: Create .repo file
       run: |
@@ -84,6 +92,7 @@ runs:
         baseurl=https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/${{ inputs.deploy_branch }}/${{ inputs.deploy_basepath }}/releases
         gpgcheck=0
         enabled=1' > "deployment/${{ inputs.deploy_basepath }}/releases/${{ env.NORMALIZED_PATH_RELEASES }}.repo"
+      shell: bash
     # Deploy releases repository
     - name: Deploy releases repository files
       uses: JamesIves/github-pages-deploy-action@v4
