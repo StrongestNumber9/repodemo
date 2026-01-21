@@ -30,7 +30,7 @@ runs:
         ref: ${{ inputs.deploy_branch }}
         sparse-checkout: |
           ${{ inputs.deploy_basepath }}/
-        continue-on-error: true
+      continue-on-error: true
     # Checkout main if deployment branch does not exist
     - name: Fetch main branch
       if: steps.checkout.outcome == 'failure'
