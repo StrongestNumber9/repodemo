@@ -20,25 +20,6 @@ inputs:
 runs:
   using: composite
   steps:
-    # Try checking out deployment branch
-    - name: Fetch deployment branch
-      id: checkout
-      uses: actions/checkout@v6
-      with:
-        fetch-depth: 0
-        repository: ${{ github.repository }}
-        ref: ${{ inputs.deploy_branch }}
-        sparse-checkout: |
-          ${{ inputs.deploy_basepath }}/
-        path: "${{ runner.temp }}"
-      continue-on-error: true
-    # Checkout main if deployment branch does not exist
-    - name: Fetch main branch
-      if: steps.checkout.outcome == 'failure'
-      uses: actions/checkout@v6
-      with:
-        fetch-depth: 0
-        path: "${{ runner.temp }}"
     # Create deployment directories
     - name: Prepare repository deployment dirs
       run: mkdir -p "${{ runner.temp }}/deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
@@ -78,6 +59,16 @@ runs:
         target-folder: "${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
         branch: "${{ inputs.deploy_branch }}"
         token: ${{ secrets.GITHUB_TOKEN }}
+    # Checkout deployment branch for merging repos
+    - name: Fetch deployment branch
+      id: checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 1
+        repository: ${{ github.repository }}
+        ref: ${{ inputs.deploy_branch }}
+        sparse-checkout: |
+          ${{ inputs.deploy_basepath }}/
     # Merge repos
     - name: Merge repositories
       run: cd "${{ runner.temp }}/" && mergerepo_c --all --no-database $(find "${{ inputs.deploy_basepath }}/" -maxdepth 1 -type d -not -name releases -not -name "${{ inputs.deploy_basepath }}" -printf "--repo=%p ") --outputdir "${{ runner.temp }}/deployment/${{ inputs.deploy_basepath }}/releases"
