@@ -76,7 +76,7 @@ runs:
       shell: bash
     # Merge repos
     - name: Merge repositories
-      run: cd mergerepo && mergerepo_c --all --no-database $(find "mergerepo/${{ inputs.deploy_basepath }}/" -maxdepth 1 -type d -not -name releases -not -name "${{ inputs.deploy_basepath }}" -printf "--repo=%p ") --outputdir "mergerepo/${{ inputs.deploy_basepath }}/releases"
+      run: cd mergerepo && mergerepo_c --all --no-database $(find "${{ inputs.deploy_basepath }}/" -maxdepth 1 -type d -not -name releases -not -name "${{ inputs.deploy_basepath }}" -printf "--repo=%p ") --outputdir "${{ inputs.deploy_basepath }}/releases"
       shell: bash
     # Normalize path for repofile
     - name: Normalize repository information
