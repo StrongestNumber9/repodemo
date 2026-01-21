@@ -69,9 +69,10 @@ runs:
         ref: ${{ inputs.deploy_branch }}
         sparse-checkout: |
           ${{ inputs.deploy_basepath }}/
+        path: mergerepo
     # Merge repos
     - name: Merge repositories
-      run: cd "${{ runner.temp }}/" && mergerepo_c --all --no-database $(find "${{ inputs.deploy_basepath }}/" -maxdepth 1 -type d -not -name releases -not -name "${{ inputs.deploy_basepath }}" -printf "--repo=%p ") --outputdir "${{ runner.temp }}/deployment/${{ inputs.deploy_basepath }}/releases"
+      run: cd mergerepo && mergerepo_c --all --no-database $(find "${{ inputs.deploy_basepath }}/" -maxdepth 1 -type d -not -name releases -not -name "${{ inputs.deploy_basepath }}" -printf "--repo=%p ") --outputdir "mergerepo/${{ inputs.deploy_basepath }}/releases"
       shell: bash
     # Normalize path for repofile
     - name: Normalize repository information
@@ -84,13 +85,13 @@ runs:
         name=${{ env.NORMALIZED_PATH_RELEASES }}
         baseurl=https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/${{ inputs.deploy_branch }}/${{ inputs.deploy_basepath }}/releases
         gpgcheck=0
-        enabled=1' > "${{ runner.temp }}/deployment/${{ inputs.deploy_basepath }}/releases/${{ env.NORMALIZED_PATH_RELEASES }}.repo"
+        enabled=1' > "mergerepo/${{ inputs.deploy_basepath }}/releases/${{ env.NORMALIZED_PATH_RELEASES }}.repo"
       shell: bash
     # Deploy releases repository
     - name: Deploy releases repository files
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: "${{ runner.temp }}/deployment/${{ inputs.deploy_basepath }}/releases"
+        folder: "mergerepo/${{ inputs.deploy_basepath }}/releases"
         target-folder: "${{ inputs.deploy_basepath }}/releases"
         branch: "${{ inputs.deploy_branch }}"
         token: ${{ secrets.GITHUB_TOKEN }}
