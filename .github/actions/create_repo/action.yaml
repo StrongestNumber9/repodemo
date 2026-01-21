@@ -70,9 +70,12 @@ runs:
         sparse-checkout: |
           ${{ inputs.deploy_basepath }}/
         path: mergerepo
+    # DEBUG REMOVE ME
+    - name: Debug
+      run: echo ">>>>>>>>>>GREPME>>>>>>>>>" && pwd && cd mergerepo && find .
     # Merge repos
     - name: Merge repositories
-      run: cd mergerepo && mergerepo_c --all --no-database $(find "${{ inputs.deploy_basepath }}/" -maxdepth 1 -type d -not -name releases -not -name "${{ inputs.deploy_basepath }}" -printf "--repo=%p ") --outputdir "mergerepo/${{ inputs.deploy_basepath }}/releases"
+      run: cd mergerepo && mergerepo_c --all --no-database $(find "mergerepo/${{ inputs.deploy_basepath }}/" -maxdepth 1 -type d -not -name releases -not -name "${{ inputs.deploy_basepath }}" -printf "--repo=%p ") --outputdir "mergerepo/${{ inputs.deploy_basepath }}/releases"
       shell: bash
     # Normalize path for repofile
     - name: Normalize repository information
@@ -87,6 +90,9 @@ runs:
         gpgcheck=0
         enabled=1' > "mergerepo/${{ inputs.deploy_basepath }}/releases/${{ env.NORMALIZED_PATH_RELEASES }}.repo"
       shell: bash
+    # DEBUG REMOVE ME
+    - name: Debug
+      run: echo ">>>>>>>>>>GREPME>>>>>>>>>" && pwd && cd mergerepo && find .
     # Deploy releases repository
     - name: Deploy releases repository files
       uses: JamesIves/github-pages-deploy-action@v4
