@@ -30,15 +30,15 @@ runs:
         ref: ${{ inputs.deploy_branch }}
         sparse-checkout: |
           ${{ inputs.deploy_basepath }}/
+          path: "${{ runner.temp }}"
       continue-on-error: true
-      path: "${{ runner.temp }}"
     # Checkout main if deployment branch does not exist
     - name: Fetch main branch
       if: steps.checkout.outcome == 'failure'
       uses: actions/checkout@v6
       with:
         fetch-depth: 0
-      path: "${{ runner.temp }}"
+        path: "${{ runner.temp }}"
     # Create deployment directories
     - name: Prepare repository deployment dirs
       run: mkdir -p "${{ runner.temp }}/deployment/${{ inputs.deploy_basepath }}/${{ inputs.component_version }}"
