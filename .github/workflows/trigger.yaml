@@ -10,8 +10,21 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
-      - name: Create repo
+      - name: Create repo 10.4.1
         uses: StrongestNumber9/dfg_01@initial_release
         with:
-          repository: teragrep/jla_02
-          version: 1.5.0
+          repository: teragrep/pth_10
+          version: 10.4.1
+          to_path: new_repo
+      - name: Create repo 10.4.0
+        uses: StrongestNumber9/dfg_01@initial_release
+        with:
+          repository: teragrep/pth_10
+          version: 10.4.0
+          to_path: new_repo
+      - name: Create repo 10.3.4
+        uses: StrongestNumber9/dfg_01@initial_release
+        with:
+          repository: teragrep/pth_10
+          version: 10.3.4
+          to_path: new_repo
