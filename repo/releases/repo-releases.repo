@@ -1,0 +1,5 @@
+[repo-releases]
+name=repo-releases
+baseurl=https://raw.githubusercontent.com/StrongestNumber9/repodemo/refs/heads/gh-pages/repo/releases
+gpgcheck=0
+enabled=1
