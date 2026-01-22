@@ -1,5 +1,5 @@
-[repo-1.5.0]
-name=repo-1.5.0
+[teragrep-jla_02-1.5.0]
+name=teragrep-jla_02-1.5.0
 baseurl=https://raw.githubusercontent.com/StrongestNumber9/repodemo/refs/heads/gh-pages/repo/1.5.0
 gpgcheck=0
 enabled=1
