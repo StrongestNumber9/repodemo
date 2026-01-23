@@ -5,18 +5,19 @@ on: [ push ]
 jobs:
   setup:
     runs-on: ubuntu-latest
+
+  process:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        attempt: ${{ fromJson(process.set-matrix.outputs.matrix) }}
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
         run: echo "::set-output name=matrix::[\"1\", \"2\"]"
-
-  process:
-    needs: setup
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 1
-      matrix:
-        attempt: ${{ fromJson(needs.setup.outputs.matrix) }}
-    steps:
-      - run: echo "Processing ${{ matrix.attempt }} at $(date)" && if [ "${{ matrix.attempt }}" == "2" ]; then echo "Failure here :)"; echo "::set-output name=matrix::[\"1\", \"2\", \"3\"]"; else echo "Going on as usual"; fi;
+      - name: "Attempt"
+        run: echo "Processing ${{ matrix.attempt }} at $(date)" && if [ "${{ matrix.attempt }}" == "3" ]; then echo "matrix=Did not fail!"; exit 0; else echo "Failed!"; exit 1; fi;
+      - name: "Add retry?"
+        run: echo "::set-output name=matrix::[\"$((${{ matrix.attempt }}+1))\"]"
