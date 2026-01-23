@@ -1,6 +1,6 @@
 name: Trigger create repo
 
-on: [ push ]
+on: [ release ]
 
 jobs:
   create_repo:

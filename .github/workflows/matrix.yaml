@@ -3,7 +3,6 @@ name: Matrix test
 on: [ push ]
 jobs:
   process:
-    needs: setup
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
