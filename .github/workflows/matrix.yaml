@@ -6,16 +6,15 @@ env:
   attempt: '["1"]'
 
 jobs:
-  setup:
+  run:
     runs-on: ubuntu-latest
-  process:
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 1
-      matrix:
-        attempt: ${{ fromJson(env.attempt) }}
     steps:
-      - name: debug
-        run: echo "${{ env.attempt }} -> ${{ matrix.attempt }}";
       - name: attempt
-        run: echo "Processing ${{ matrix.attempt }} at $(date)" && if [ "${{ matrix.attempt }}" == "3" ]; then echo "matrix=Did not fail!"; exit 0; else echo "Failed!"; exit 1; fi;
+        run: if [ "$((RANDOM%15))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
+  re-run:
+    needs: run
+    runs-on: ubuntu-latest
+    steps:
+      - name: re-run
+        if: needs.attempt.result != 'success'
+        run: echo "Attempt should be re-attempted."
