@@ -2,25 +2,12 @@ name: Matrix test
 
 on: [ push ]
 
-env:
-  attempt: '["1"]'
-
 jobs:
   run:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        attempt: ${{ steps.attempt.outputs.attempt }}
     steps:
       - name: attempt
-        run: if [ "$((RANDOM%15))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
-        continue-on-error: true
-  re-run:
-    needs: run
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: re-run
-        if: needs.attempt.result != 'success'
-        run: |
-          echo "Attempt should be re-attempted."
-          gh run rerun --job matrix
-        env:
-          GH_TOKEN: ${{ github.token }}
+        run: echo "Matrix: ${{ matrix.attempt }}"; if [ "$((RANDOM%15))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
