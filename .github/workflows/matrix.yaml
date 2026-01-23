@@ -11,9 +11,9 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        attempt: ${{ fromJson(steps.attempt.outputs.matrix) }}
+        attempt: ${{ fromJson(attempt.outputs.matrix) }}
     outputs:
-      matrix: ${{ steps.attempt.outputs.matrix }}
+      matrix: ${{ attempt.outputs.matrix }}
     steps:
       - name: attempt
         run: echo "Processing ${{ matrix.attempt }} at $(date)" && if [ "${{ matrix.attempt }}" == "3" ]; then echo "matrix=Did not fail!"; exit 0; else echo "Failed!"; exit 1; fi;
