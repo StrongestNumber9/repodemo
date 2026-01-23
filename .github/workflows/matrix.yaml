@@ -18,4 +18,6 @@ jobs:
     steps:
       - name: re-run
         if: needs.attempt.result != 'success'
-        run: echo "Attempt should be re-attempted."
+        run: |
+          echo "Attempt should be re-attempted."
+          gh run rerun --job run
