@@ -1,13 +1,22 @@
 name: Matrix test
 
 on: [ push ]
+
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "::set-output name=matrix::[\"1\", \"2\"]"
+
   process:
+    needs: setup
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
       matrix:
-        attempt: [ "1" ]
+        attempt: ${{ fromJson(needs.setup.outputs.matrix) }}
     steps:
-      - run: |
-          echo "Processing ${{ matrix.attempt }}"; sleep 2; if [ "$((RANDOM%15))" != "0" ]; then echo "matrix=[ \"$((${{ matrix.attempt }} + 1))\" ]" >> $GITHUB_STATE; else echo "Yay"; fi;
+      - run: echo "Processing ${{ matrix.attempt }} at $(date)" && if [ "${{ matrix.attempt }}" == "2" ]; then echo "Failure here :)"; echo "::set-output name=matrix::[\"1\", \"2\", \"3\"]"; else echo "Going on as usual"; fi;
