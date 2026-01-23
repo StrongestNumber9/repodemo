@@ -19,7 +19,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        attempt: ${{ fromJson(${{ env.matrix }}) }}
+        attempt: ${{ fromJson(env.matrix) }}
     steps:
       - name: debug
         run: echo "${{ env.matrix }}";
