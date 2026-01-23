@@ -21,6 +21,6 @@ jobs:
         if: needs.attempt.result != 'success'
         run: |
           echo "Attempt should be re-attempted."
-          gh run rerun --job run
+          gh run rerun --job matrix
         env:
           GH_TOKEN: ${{ github.token }}
