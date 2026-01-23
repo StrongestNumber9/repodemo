@@ -1,0 +1,21 @@
+name: Matrix test
+
+on: [ push ]
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "::set-output name=matrix::[\"first\", \"second\", \"third\"]"
+
+  process:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        number: ${{ fromJson(needs.setup.outputs.matrix) }}
+    steps:
+      - run: |
+          echo "Processing ${{ matrix.number }}, start at: " && date && sleep 10 && echo "Done at: " && date
