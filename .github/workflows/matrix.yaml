@@ -11,13 +11,11 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        attempt: ${{ fromJson(process.set-matrix.outputs.matrix) }}
+        attempt: ${{ fromJson(steps.attempt.outputs.matrix) }}
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrix: ${{ steps.attempt.outputs.matrix }}
     steps:
-      - id: set-matrix
-        run: echo "::set-output name=matrix::[\"1\", \"2\"]"
-      - name: "Attempt"
+      - name: attempt
         run: echo "Processing ${{ matrix.attempt }} at $(date)" && if [ "${{ matrix.attempt }}" == "3" ]; then echo "matrix=Did not fail!"; exit 0; else echo "Failed!"; exit 1; fi;
       - name: "Add retry?"
         run: echo "::set-output name=matrix::[\"$((${{ matrix.attempt }}+1))\"]"
