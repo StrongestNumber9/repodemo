@@ -21,3 +21,5 @@ jobs:
         run: |
           echo "Attempt should be re-attempted."
           gh run rerun --job run
+        env:
+          GH_TOKEN: ${{ github.token }}
