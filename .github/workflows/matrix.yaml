@@ -10,4 +10,6 @@ jobs:
         attempt: ${{ steps.attempt.outputs.attempt }}
     steps:
       - name: attempt
-        run: echo "Matrix: ${{ matrix.attempt }}"; if [ "$((RANDOM%15))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
+        run: |
+          echo "Matrix ${{ matrix.attempt }}";
+          if [ "$((RANDOM%15))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
