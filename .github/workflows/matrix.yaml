@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: attempt
         run: if [ "$((RANDOM%15))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
+        continue-on-error: true
   re-run:
     needs: run
     runs-on: ubuntu-latest
