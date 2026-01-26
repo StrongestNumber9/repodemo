@@ -1,5 +1,6 @@
 name: Fail most of the time
 
+on: workflow_dispatch
 jobs:
   run:
     runs-on: ubuntu-latest
