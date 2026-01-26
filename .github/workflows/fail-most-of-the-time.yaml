@@ -1,7 +1,5 @@
 name: Fail most of the time
 
-on: [ push ]
-
 jobs:
   run:
     runs-on: ubuntu-latest
