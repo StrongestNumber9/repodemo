@@ -1,6 +1,8 @@
 name: Run until works
 
 on: [ push ]
+env:
+  GH_TOKEN: ${{ github.token }}
 
 jobs:
   run:
@@ -8,12 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: ensure build works
+      - name: Trigger build
         run: |
           gh workflow run fail-most-of-the-time.yaml;
-          gh run list --workflow=fail-most-of-the-time.yaml --limit 1 --json databaseId --jq '.[0].databaseId';
           printf "RUNID=%q\n" "$(gh run list --workflow=fail-most-of-the-time.yaml --limit 1 --json databaseId --jq '.[0].databaseId')" >> $GITHUB_ENV
-          echo "Workflow id is ${{ env.RUNID }}"
+      - name: Retry failed until works
+        run: |
           while ! gh run watch "${{ env.RUNID }}" --exit-status; do gh run rerun "${{ env.RUNID }}" --failed; done;
-        env:
-          GH_TOKEN: ${{ github.token }}
