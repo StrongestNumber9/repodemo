@@ -6,6 +6,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
       - name: attempt
         run: |
           echo "Matrix ${{ matrix.attempt }}";
