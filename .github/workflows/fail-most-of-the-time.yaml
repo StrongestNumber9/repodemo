@@ -7,9 +7,9 @@ jobs:
     steps:
       - name: Always finish
         run: exit 0;
-      - name: Fail half
+      - name: Fail first three
         run: |
-          if [ "$((RANDOM%2))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
-      - name: Fail often
+          if [[ ${{ github.run_attempt }} -gt 3 ]]; then echo "Yay, ${{ github.run_attempt }} > 3" && exit 0; else echo "Nay, ${{ github.run_attempt }} <= 3" && exit 1; fi;
+      - name: Fail first six
         run: |
-          if [ "$((RANDOM%15))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
+          if [[ ${{ github.run_attempt }} -gt 6 ]]; then echo "Yay, ${{ github.run_attempt }} > 6" && exit 0; else echo "Nay, ${{ github.run_attempt }} <= 6" && exit 1; fi;
