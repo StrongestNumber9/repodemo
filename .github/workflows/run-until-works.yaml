@@ -10,6 +10,7 @@ jobs:
       - uses: actions/checkout@v6
       - name: ensure build works
         run: |
-          gh workflow run fail-most-of-the-time.yaml && while !gh run watch "$(gh run list --workflow="fail-most-of-the-time.yaml" --limit 1 --json databaseId --jq '.[0].databaseId')" --exit-status; do gh run rerun "$(gh run list --workflow="fail-most-of-the-time.yaml" --limit 1 --json databaseId --jq '.[0].databaseId')" --failed; echo $?
+          gh workflow run fail-most-of-the-time.yaml;
+          while ! gh run watch "$(gh run list --workflow=fail-most-of-the-time.yaml"--limit 1 --json databaseId --jq '.[0].databaseId')" --exit-status; do gh run rerun "$(gh run list --workflow=fail-most-of-the-time.yaml --limit 1 --json databaseId --jq '.[0].databaseId')" --failed; done;
         env:
           GH_TOKEN: ${{ github.token }}
