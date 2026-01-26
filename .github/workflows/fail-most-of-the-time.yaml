@@ -5,6 +5,11 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Fail
+      - name: Always finish
+        run: exit 0;
+      - name: Fail half
+        run: |
+          if [ "$((RANDOM%2))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
+      - name: Fail often
         run: |
           if [ "$((RANDOM%15))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
