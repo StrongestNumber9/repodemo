@@ -11,8 +11,8 @@ jobs:
       - name: ensure build works
         run: |
           gh workflow run fail-most-of-the-time.yaml;
-          printf "RUNID=%q\n" "$(gh run list --workflow=fail-most-of-the-time.yaml"--limit 1 --json databaseId --jq '.[0].databaseId')" >> $GITHUB_ENV
+          printf "RUNID=%q\n" "$(gh run list --workflow=fail-most-of-the-time.yaml --limit 1 --json databaseId --jq '.[0].databaseId')" >> $GITHUB_ENV
           echo "Workflow id is ${{ env.RUNID }}"
-          while ! gh run watch "${{ env.RUNID }} --exit-status; do gh run rerun "${{ env.RUNID }}" $(gh run list --workflow=fail-most-of-the-time.yaml --limit 1 --json databaseId --jq '.[0].databaseId')" --failed; done;'
+          while ! gh run watch "${{ env.RUNID }}" --exit-status; do gh run rerun "${{ env.RUNID }}" --failed; done;
         env:
           GH_TOKEN: ${{ github.token }}
