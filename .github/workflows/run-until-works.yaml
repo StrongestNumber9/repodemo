@@ -1,0 +1,13 @@
+name: Run until works
+
+on: [ push ]
+
+jobs:
+  run:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: ensure build works
+        run: |
+          gh workflow run fail-most-of-the-time.yaml && echo $?

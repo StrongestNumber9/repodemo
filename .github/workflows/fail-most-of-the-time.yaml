@@ -1,0 +1,11 @@
+name: Fail most of the time
+
+on: [ push ]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail
+        run: |
+          if [ "$((RANDOM%15))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
