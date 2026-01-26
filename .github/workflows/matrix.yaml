@@ -4,6 +4,7 @@ on: [ push ]
 
 jobs:
   run:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: attempt
@@ -11,8 +12,7 @@ jobs:
           echo "Matrix ${{ matrix.attempt }}";
           if [ "$((RANDOM%15))" == "0" ]; then echo "Yay" && exit 0; else echo "Nay" && exit 1; fi;
   rerun-failed-jobs:
-    permissions:
-      contents: write
+    permissions: write-all
     runs-on: ubuntu-latest
     needs: [ run ]
     if: failure()
