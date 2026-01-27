@@ -1,7 +1,6 @@
 name: Trigger create repo
 
 on: [ push ]
-
 jobs:
   create_repo:
     runs-on: ubuntu-latest
