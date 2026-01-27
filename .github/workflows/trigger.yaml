@@ -4,8 +4,7 @@ on: [ push ]
 jobs:
   create_repo:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    permissions: write-all
     steps:
       - name: Create pth_10 repo 10.4.1
         uses: StrongestNumber9/dfg_01@initial_release
