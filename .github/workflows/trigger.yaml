@@ -12,8 +12,6 @@ jobs:
           from_repository: pth_10
           from_version: 10.4.1
           to_repository: StrongestNumber9/pkg_01
-        env:
-          GH_TOKEN: ${{ github.token }}
 
       - name: Create pth_10 repo 10.4.0
         uses: StrongestNumber9/dfg_01@initial_release
@@ -21,8 +19,6 @@ jobs:
           from_repository: pth_10
           from_version: 10.4.0
           to_repository: StrongestNumber9/pkg_01
-        env:
-          GH_TOKEN: ${{ github.token }}
 
       - name: Create jla_02 repo 1.5.0
         uses: StrongestNumber9/dfg_01@initial_release
@@ -30,8 +26,6 @@ jobs:
           from_repository: jla_02
           from_version: 1.5.0
           to_repository: StrongestNumber9/pkg_01
-        env:
-          GH_TOKEN: ${{ github.token }}
 
       - name: Create jla_02 repo 1.4.0
         uses: StrongestNumber9/dfg_01@initial_release
@@ -39,5 +33,3 @@ jobs:
           from_repository: jla_02
           from_version: 1.4.0
           to_repository: StrongestNumber9/pkg_01
-        env:
-          GH_TOKEN: ${{ github.token }}
