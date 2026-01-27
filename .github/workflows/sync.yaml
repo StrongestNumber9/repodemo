@@ -15,5 +15,5 @@ jobs:
               owner: 'StrongestNumber9',
               repo: 'dfg_01',
               workflow_id: 'deploy-component-repo.yaml',
-              ref: initial_release
+              ref: 'initial_release'
             })
