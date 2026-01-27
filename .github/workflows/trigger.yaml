@@ -1,6 +1,6 @@
 name: Trigger create repo
 
-on: [ release ]
+on: [ push ]
 
 jobs:
   create_repo:
@@ -8,23 +8,30 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
-      - name: Create repo 10.4.1
+      - name: Create pth_10 repo 10.4.1
         uses: StrongestNumber9/dfg_01@initial_release
         with:
-          repository: teragrep/pth_10
-          version: 10.4.1
-          to_path: new_repo
-      - name: Create repo 10.4.0
+          from_repository: pth_10
+          from_version: 10.4.1
+          to_repository: StrongestNumber9/pkg_01
+
+      - name: Create pth_10 repo 10.4.0
         uses: StrongestNumber9/dfg_01@initial_release
         with:
-          repository: teragrep/pth_10
-          version: 10.4.0
-          to_path: new_repo
-      - name: Create repo 10.3.4
+          from_repository: pth_10
+          from_version: 10.4.0
+          to_repository: StrongestNumber9/pkg_01
+
+      - name: Create jla_02 repo 1.5.0
         uses: StrongestNumber9/dfg_01@initial_release
         with:
-          repository: teragrep/pth_10
-          version: 10.3.4
-          to_path: new_repo
+          from_repository: jla_02
+          from_version: 1.5.0
+          to_repository: StrongestNumber9/pkg_01
+
+      - name: Create jla_02 repo 1.4.0
+        uses: StrongestNumber9/dfg_01@initial_release
+        with:
+          from_repository: jla_02
+          from_version: 1.4.0
+          to_repository: StrongestNumber9/pkg_01
