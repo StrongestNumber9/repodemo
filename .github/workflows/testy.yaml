@@ -6,7 +6,7 @@ jobs:
   create_repo:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy component repo
+      - name: Deploy
         run: |
           gh workflow run deploy-component-repo.yaml \
           --repo StrongestNumber9" \
@@ -19,11 +19,11 @@ jobs:
           printf "DEPLOY_RUNID=%q\n" "$(gh run list --workflow=deploy-component-repo.yaml --repo StrongestNumber9 --ref dfg_01 --limit 1 --json databaseId --jq '.[0].databaseId')" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ github.token }}
-      - name: Retry deploy component repo until finished
+      - name: Retry deploy
         run: while ! gh run watch "${{ env.DEPLOY_RUNID }}" --exit-status; do gh run rerun "${{ env.DEPLOY_RUNID }}"; done;
         env:
           GH_TOKEN: ${{ github.token }}
-      - name: Update central repo
+      - name: Update
         run: |
           gh workflow run update-central-repo.yaml \
           --repo StrongestNumber9" \
@@ -35,7 +35,7 @@ jobs:
           printf UPDATE_RUNID=%q\n" "$(gh run list --workflow=update-central-repo.yaml --repo StrongestNumber9 --ref dfg_01 --limit 1 --json databaseId --jq '.[0].databaseId')" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ github.token }}
-      - name: Retry update central repo
+      - name: Retry update
         run: while ! gh run watch "${{ env.UPDATE_RUNID }}" --exit-status; do gh run rerun "${{ env.UPDATE_RUNID }}"; done;
         env:
           GH_TOKEN: ${{ github.token }}
