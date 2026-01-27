@@ -9,14 +9,14 @@ jobs:
       - name: Deploy
         run: |
           gh workflow run deploy-component-repo.yaml \
-          --repo StrongestNumber9 \
-          --ref "dfg_01" \
+          --repo StrongestNumber9/dfg_01 \
+          --ref initial_release \
           --raw-field "from_repository=pth_10" \
           --raw-field "from_version=10.4.1" \
           --raw-field "to_repository=StrongestNumber9/pkg_01" \
           --raw-field "to_branch=gh-pages" \
           --raw-field "to_path_component=components";
-          printf "DEPLOY_RUNID=%q\n" "$(gh run list --workflow=deploy-component-repo.yaml --repo StrongestNumber9 --ref dfg_01 --limit 1 --json databaseId --jq '.[0].databaseId')" >> $GITHUB_ENV
+          printf "DEPLOY_RUNID=%q\n" "$(gh run list --workflow=deploy-component-repo.yaml --repo StrongestNumber9/dfg_01 --ref initial_release --limit 1 --json databaseId --jq '.[0].databaseId')" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Retry deploy
@@ -26,13 +26,13 @@ jobs:
       - name: Update
         run: |
           gh workflow run update-central-repo.yaml \
-          --repo StrongestNumber9 \
-          --ref "dfg_01" \
+          --repo StrongestNumber9/dfg_01 \
+          --ref initial_release \
           --raw-field "to_repository=StrongestNumber9/pkg_01" \
           --raw-field "to_branch=gh-pages" \
           --raw-field "to_path_component=components" \
           --raw-field "to_path_central=central";
-          printf UPDATE_RUNID=%q\n" "$(gh run list --workflow=update-central-repo.yaml --repo StrongestNumber9 --ref dfg_01 --limit 1 --json databaseId --jq '.[0].databaseId')" >> $GITHUB_ENV
+          printf UPDATE_RUNID=%q\n" "$(gh run list --workflow=update-central-repo.yaml --repo StrongestNumber9/dfg_01 --ref initial_release --limit 1 --json databaseId --jq '.[0].databaseId')" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Retry update
