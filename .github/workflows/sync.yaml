@@ -10,6 +10,7 @@ jobs:
       - name: Trigger Workflow
         uses: actions/github-script@v6
         with:
+          github-token: ${{ github.token }}
           script: |
             github.rest.actions.createWorkflowDispatch({
               owner: 'StrongestNumber9',
