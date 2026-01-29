@@ -6,6 +6,9 @@ jobs:
   create_repo:
     runs-on: ubuntu-latest
     steps:
+      - name: dl
+        runs: |
+          gh release download --repo teragrep/bos_01 --pattern "*.rpm" --dir "test3" 2.1.0;
       - name: Create two
         uses: StrongestNumber9/dfg_01@merged_release
         with:

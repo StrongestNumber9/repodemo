@@ -6,6 +6,9 @@ jobs:
   create_repo:
     runs-on: ubuntu-latest
     steps:
+      - name: dl
+        run: |
+          gh release download --repo "teragrep/rlp_10" --pattern "*.rpm" --dir "test1" "1.0.0";
       - name: Create one
         uses: StrongestNumber9/dfg_01@merged_release
         with:
