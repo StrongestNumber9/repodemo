@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create one
-        uses: StrongestNumber9/dfg_01@initial_release
+        uses: StrongestNumber9/dfg_01@merged_release
         with:
           from_repository: teragrep/rlp_10
           from_version: 1.0.0
