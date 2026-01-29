@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: dl
-        runs: |
+        run: |
           gh release download --repo teragrep/bos_01 --pattern "*.rpm" --dir "test3" 2.1.0;
         env:
           GH_TOKEN: ${{ github.token }}
