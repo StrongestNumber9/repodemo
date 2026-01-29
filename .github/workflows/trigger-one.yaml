@@ -18,5 +18,5 @@ jobs:
           from_version: 1.0.0
           to_repository: StrongestNumber9/pkg_01
           token: ${{ secrets.PAT_TOKEN }}
-          files: test1/*
+          files: test1/*.rpm
           max_attempts: 5
