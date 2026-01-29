@@ -13,4 +13,4 @@ jobs:
           from_version: 1.5.0
           to_repository: StrongestNumber9/pkg_01
           token: ${{ secrets.PAT_TOKEN }}
-          max_retries: 1
+          max_retries: 5
