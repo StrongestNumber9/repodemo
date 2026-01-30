@@ -12,11 +12,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Create three
-        uses: StrongestNumber9/dfg_01@merged_release
+        uses: StrongestNumber9/dfg_01@use_personal_token
         with:
           from_repository: teragrep/pth_10
           from_version: 11.0.1
           to_repository: StrongestNumber9/pkg_01
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ github.token }}
           files: test2/*.rpm
           max_attempts: 5
