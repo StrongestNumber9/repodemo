@@ -12,11 +12,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Create one
-        uses: StrongestNumber9/dfg_01@use_personal_token
+        uses: StrongestNumber9/dfg_01@use_deploy_key
         with:
           from_repository: teragrep/rlp_10
           from_version: 1.0.0
           to_repository: StrongestNumber9/pkg_01
-          token: ${{ github.token }}
+          deploy_key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           files: test1/*.rpm
           max_attempts: 5
