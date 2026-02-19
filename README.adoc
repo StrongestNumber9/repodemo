@@ -1,0 +1,5 @@
+= Example RPM packaging project
+
+The goal of this project is to be a minimal example demo for link:../workflows#upload_release_github_attachmentyaml[upload_release_github_attachment.yaml]
+
+Build the project with `mvn clean package` and package the rpm with `cd rpm && mvn clean package -f rpm.pom.xml`
