@@ -15,10 +15,10 @@ jobs:
         uses: StrongestNumber9/dfg_01@support_repo_from_scratch
         with:
           from_repository: "${{ github.repository }}"
-          from_version: "${{ github.event.release.tag_name }}"
+          from_version: "${{ github.run_id }}"
           to_repository: "${{ github.repository_owner }}/pkg_01"
           to_path: "rocky/8"
-          deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY }}
+          deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
         env:
