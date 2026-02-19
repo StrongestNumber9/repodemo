@@ -1,0 +1,23 @@
+name: trigger
+
+on: [ push ]
+permissions: write-all
+jobs:
+  create_repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: dl
+        run: |
+          gh release download --repo "teragrep/rlp_10" --pattern "*.rpm" --dir "rpm" "1.0.0";
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Update
+        uses: StrongestNumber9/dfg_01@support_repo_from_scratch
+        with:
+          from_repository: "${{ github.repository }}"
+          from_version: "${{ github.event.release.tag_name }}"
+          to_repository: "${{ github.repository_owner }}/pkg_01"
+          to_path: "rocky/8"
+          deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY }}
+          files: test/*.rpm
+          gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
