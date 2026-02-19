@@ -21,3 +21,6 @@ jobs:
           deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY }}
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
+        env:
+          has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
+        if: ${{ env.has_deploy_key == 'true' }}
