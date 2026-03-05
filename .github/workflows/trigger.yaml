@@ -12,7 +12,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Update
-        uses: StrongestNumber9/dfg_01@support_repo_from_scratch
+        uses: StrongestNumber9/dfg_01@make_proxyable
         with:
           from_repository: "${{ github.repository }}"
           from_version: "${{ github.run_id }}"
@@ -26,7 +26,7 @@ jobs:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
         if: ${{ env.has_deploy_key == 'true' }}
       - name: Update
-        uses: StrongestNumber9/dfg_01@support_repo_from_scratch
+        uses: StrongestNumber9/dfg_01@make_proxyable
         with:
           from_repository: "${{ github.repository }}"
           from_version: "${{ github.run_id }}"
