@@ -20,6 +20,7 @@ jobs:
           to_path: "links/no-baseurl-no-prefix"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
           files: rpm/*.rpm
+          repo_name: no-baseurl-no-prefix
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
@@ -51,7 +52,7 @@ jobs:
           repo_name: with-baseurl-with-prefix-no-append
           repo_baseurl: "http://127.0.0.1:8081/repository/teragrep"
           repo_baseurl_append_path: false
-          location_prefix: some/prefix
+          location_prefix: packages
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
         if: ${{ env.has_deploy_key == 'true' }}
@@ -68,7 +69,7 @@ jobs:
           repo_name: with-baseurl-with-prefix-with-append
           repo_baseurl: "http://127.0.0.1:8081/repository/teragrep"
           repo_baseurl_append_path: true
-          location_prefix: some/other/prefix
+          location_prefix: packages
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
         if: ${{ env.has_deploy_key == 'true' }}
