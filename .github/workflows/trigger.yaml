@@ -17,11 +17,12 @@ jobs:
           from_repository: "${{ github.repository }}"
           from_version: "${{ github.run_id }}"
           to_repository: "${{ github.repository_owner }}/pkg_01"
-          to_path: "rocky/8"
+          to_path: "links/absolute"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
-          repo_name: repodemo-rocky8
+          repo_name: links-absolute
+          absolute_links: true
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
         if: ${{ env.has_deploy_key == 'true' }}
@@ -31,11 +32,26 @@ jobs:
           from_repository: "${{ github.repository }}"
           from_version: "${{ github.run_id }}"
           to_repository: "${{ github.repository_owner }}/pkg_01"
-          to_path: "rocky/10"
+          to_path: "links/absolute-unset"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
-          repo_name: repodemo-rocky9
+          repo_name: links-absolute-unset
+        env:
+          has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
+        if: ${{ env.has_deploy_key == 'true' }}
+      - name: Update
+        uses: StrongestNumber9/dfg_01@make_proxyable
+        with:
+          from_repository: "${{ github.repository }}"
+          from_version: "${{ github.run_id }}"
+          to_repository: "${{ github.repository_owner }}/pkg_01"
+          to_path: "links/relative"
+          deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
+          files: rpm/*.rpm
+          gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
+          repo_name: links-relative
+          absolute_links: false
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
         if: ${{ env.has_deploy_key == 'true' }}
