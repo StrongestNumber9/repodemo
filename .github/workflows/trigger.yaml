@@ -51,7 +51,7 @@ jobs:
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
           repo_name: links-relative-unset
-          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep/"
+          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep"
           absolute_links: false
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
@@ -67,7 +67,7 @@ jobs:
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
           repo_name: links-relative-unappended
-          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep/"
+          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep"
           repo_baseurl_append_path: false
           absolute_links: false
         env:
@@ -84,7 +84,7 @@ jobs:
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
           repo_name: links-relative-appended
-          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep/"
+          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep"
           repo_baseurl_append_path: true
           absolute_links: false
         env:
