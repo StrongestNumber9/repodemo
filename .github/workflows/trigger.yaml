@@ -14,8 +14,8 @@ jobs:
       - name: Update
         uses: StrongestNumber9/dfg_01@make_proxyable
         with:
-          from_repository: "${{ github.repository }}"
-          from_version: "${{ github.run_id }}"
+          from_repository: teragrep/rlp_10
+          from_version: 1.0.0
           to_repository: "${{ github.repository_owner }}/pkg_01"
           to_path: "links/no-baseurl-no-prefix"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
