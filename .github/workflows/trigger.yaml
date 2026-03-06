@@ -22,7 +22,6 @@ jobs:
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
           repo_name: links-absolute
-          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep/"
           absolute_links: true
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
@@ -38,7 +37,6 @@ jobs:
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
           repo_name: links-absolute-unset
-          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep/"
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
         if: ${{ env.has_deploy_key == 'true' }}
@@ -48,12 +46,46 @@ jobs:
           from_repository: "${{ github.repository }}"
           from_version: "${{ github.run_id }}"
           to_repository: "${{ github.repository_owner }}/pkg_01"
-          to_path: "links/relative"
+          to_path: "links/relative-unset"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
-          repo_name: links-relative
+          repo_name: links-relative-unset
           repo_baseurl: "http://127.0.0.1:8081/repository/teragrep/"
+          absolute_links: false
+        env:
+          has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
+        if: ${{ env.has_deploy_key == 'true' }}
+      - name: Update
+        uses: StrongestNumber9/dfg_01@make_proxyable
+        with:
+          from_repository: "${{ github.repository }}"
+          from_version: "${{ github.run_id }}"
+          to_repository: "${{ github.repository_owner }}/pkg_01"
+          to_path: "links/relative-unappended"
+          deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
+          files: rpm/*.rpm
+          gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
+          repo_name: links-relative-unappended
+          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep/"
+          repo_baseurl_append_path: false
+          absolute_links: false
+        env:
+          has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
+        if: ${{ env.has_deploy_key == 'true' }}
+      - name: Update
+        uses: StrongestNumber9/dfg_01@make_proxyable
+        with:
+          from_repository: "${{ github.repository }}"
+          from_version: "${{ github.run_id }}"
+          to_repository: "${{ github.repository_owner }}/pkg_01"
+          to_path: "links/relative-appended"
+          deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
+          files: rpm/*.rpm
+          gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
+          repo_name: links-relative-appended
+          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep/"
+          repo_baseurl_append_path: true
           absolute_links: false
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
