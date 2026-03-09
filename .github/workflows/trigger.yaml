@@ -8,14 +8,14 @@ jobs:
     steps:
       - name: dl
         run: |
-          gh release download --repo "teragrep/rlp_10" --pattern "*.rpm" --dir "rpm" "1.0.0";
+          gh release download --repo "strongestnumber9/rlp_07" --pattern "*.rpm" --dir "rpm" "1.0.21";
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Update
         uses: StrongestNumber9/dfg_01@package_manager_compat
         with:
-          from_repository: teragrep/rlp_10
-          from_version: 1.0.0
+          from_repository: "strongestnumber9/rlp_07"
+          from_version: 1.0.21
           to_repository: "${{ github.repository_owner }}/pkg_01"
           to_path: "proxyable/default"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
@@ -27,8 +27,8 @@ jobs:
       - name: Update
         uses: StrongestNumber9/dfg_01@package_manager_compat
         with:
-          from_repository: teragrep/rlp_10
-          from_version: 1.0.0
+          from_repository: "strongestnumber9/rlp_07"
+          from_version: 1.0.21
           to_repository: "${{ github.repository_owner }}/pkg_01"
           to_path: "proxyable/baseurl"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
@@ -42,8 +42,8 @@ jobs:
       - name: Update
         uses: StrongestNumber9/dfg_01@package_manager_compat
         with:
-          from_repository: teragrep/rlp_10
-          from_version: 1.0.0
+          from_repository: "strongestnumber9/rlp_07"
+          from_version: 1.0.21
           to_repository: "${{ github.repository_owner }}/pkg_01"
           to_path: "proxyable/location-prefix"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
