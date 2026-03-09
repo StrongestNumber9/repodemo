@@ -12,64 +12,46 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Update
-        uses: StrongestNumber9/dfg_01@make_proxyable
+        uses: StrongestNumber9/dfg_01@package_manager_compat
         with:
           from_repository: teragrep/rlp_10
           from_version: 1.0.0
           to_repository: "${{ github.repository_owner }}/pkg_01"
-          to_path: "links/no-baseurl-no-prefix"
+          to_path: "proxyable/default"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
           files: rpm/*.rpm
-          repo_name: no-baseurl-no-prefix
+          repo_name: proxyable-default
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
       - name: Update
-        uses: StrongestNumber9/dfg_01@make_proxyable
+        uses: StrongestNumber9/dfg_01@package_manager_compat
         with:
           from_repository: "${{ github.repository }}"
           from_version: "${{ github.run_id }}"
           to_repository: "${{ github.repository_owner }}/pkg_01"
-          to_path: "links/with-baseurl-no-prefix-no-append"
+          to_path: "proxyable/baseurl"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
-          repo_name: with-baseurl-no-prefix-no-append
-          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep"
-        env:
-          has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
-        if: ${{ env.has_deploy_key == 'true' }}
-      - name: Update
-        uses: StrongestNumber9/dfg_01@make_proxyable
-        with:
-          from_repository: "${{ github.repository }}"
-          from_version: "${{ github.run_id }}"
-          to_repository: "${{ github.repository_owner }}/pkg_01"
-          to_path: "links/with-baseurl-with-prefix-no-append"
-          deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
-          files: rpm/*.rpm
-          gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
-          repo_name: with-baseurl-with-prefix-no-append
-          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep"
-          repo_baseurl_append_path: false
-          location_prefix: packages
+          repo_name: proxyable-baseurl
+          repo_baseurl: "http://127.0.0.1:8081/repository/${{ inputs.to_path }}"
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
         if: ${{ env.has_deploy_key == 'true' }}
       - name: Update
-        uses: StrongestNumber9/dfg_01@make_proxyable
+        uses: StrongestNumber9/dfg_01@package_manager_compat
         with:
           from_repository: "${{ github.repository }}"
           from_version: "${{ github.run_id }}"
           to_repository: "${{ github.repository_owner }}/pkg_01"
-          to_path: "links/with-baseurl-with-prefix-with-append"
+          to_path: "proxyable/location-prefix"
           deploy_key: "${{ secrets.PKG_01_DEPLOY_KEY }}"
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
-          repo_name: with-baseurl-with-prefix-with-append
+          repo_name: proxyable-location-prefix
           repo_baseurl: "http://127.0.0.1:8081/repository/teragrep"
-          repo_baseurl_append_path: true
-          location_prefix: packages
+          location_prefix: "packages/${{ inputs.to_path }}"
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
         if: ${{ env.has_deploy_key == 'true' }}
