@@ -35,7 +35,7 @@ jobs:
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
           repo_name: proxyable-baseurl
-          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep"
+          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep-baseurl"
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
         if: ${{ env.has_deploy_key == 'true' }}
@@ -50,7 +50,7 @@ jobs:
           files: rpm/*.rpm
           gpg_public_key: "${{ secrets.RPM_SIGNING_PUBLIC_KEY }}"
           repo_name: proxyable-location-prefix
-          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep"
+          repo_baseurl: "http://127.0.0.1:8081/repository/teragrep-prefix"
           location_prefix: "packages/"
         env:
           has_deploy_key: ${{ secrets.PKG_01_DEPLOY_KEY != '' }}
